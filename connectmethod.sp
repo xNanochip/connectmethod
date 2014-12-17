@@ -7,7 +7,7 @@ static String:KVPath2[PLATFORM_MAX_PATH];
 public Plugin:myinfo =
 {
 	name = "Connect Method",
-  	author = "Nanochip & Dovashin",
+  	author = "Nanochip",
   	description = "Detect when a player connects to the server through favorites and apply commands.",
 	url = "http://thecubeserver.org/"
 };
