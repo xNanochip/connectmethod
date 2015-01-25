@@ -18,7 +18,7 @@ public OnPluginStart()
 	BuildPath(Path_SM, KVPath2, sizeof(KVPath2), "configs/admins.cfg");
 }
 
-public ClientConnectedViaFavorites(client)
+public Action:ClientConnectedViaFavorites(client)
 {
 	GetClientAuthId(client, AuthId_Steam2, authid, sizeof(authid));
 	GetClientName(client, name, sizeof(name));
@@ -34,4 +34,5 @@ public ClientConnectedViaFavorites(client)
 
 	ServerCommand("sm_adduserid \"%s\" Regular %s", authid, name);
 	CPrintToChatAll("{lime}%s {orange}has this server in his or her favorites therefore receives the {mediumorchid}Regular {orange}rank!", name);
+	return Plugin_Continue;
 }

@@ -23,9 +23,10 @@ public OnClientAuthorized(client, const String:auth[])
 	{ 
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
 		{
+			new Action:result = Plugin_Continue;
 			Call_StartForward(forward_connectmethodFavorites);
 			Call_PushCell(client);
-			Call_Finish(Plugin_Continue);
+			Call_Finish(result);
 		}
 	}
 	return;
