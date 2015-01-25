@@ -24,7 +24,7 @@ public OnClientAuthorized(client, const String:auth[])
 	{ 
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
 		{ 
-          	GetClientAuthId(client, AuthId_Steam2, authid, sizeof(authid));
+          		GetClientAuthId(client, AuthId_Steam2, authid, sizeof(authid));
 			GetClientName(client, name, sizeof(name));
 			
 			new Handle:DB2 = CreateKeyValues("Admins");
@@ -38,7 +38,7 @@ public OnClientAuthorized(client, const String:auth[])
 			
 			ServerCommand("sm_adduserid \"%s\" Regular %s", authid, name);
 			CPrintToChatAll("{lime}%s {orange}has this server in his or her favorites therefore receives the {mediumorchid}Regular {orange}rank!", name);
-        }
-    }
+        	}
+    	}
 	return;
 }
