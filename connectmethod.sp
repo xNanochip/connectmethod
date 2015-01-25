@@ -5,8 +5,9 @@ new Handle:forward_connectmethodFavorites = INVALID_HANDLE;
 
 public Plugin:myinfo =
 {
-	name = "Connect Method",
+	name = "Favorite Connections",
   	author = "Nanochip",
+	version = "1.0"
   	description = "Detect when a player connects to the server through favorites and apply commands.",
 	url = "http://thecubeserver.org/"
 };
@@ -14,11 +15,12 @@ public Plugin:myinfo =
 public OnPluginStart()
 {
 	forward_connectmethodFavorites = CreateGlobalForward("ClientConnectedViaFavorites", ET_Event, Param_Cell);
+	CreateConVar("favoriteconnections_version", "1.0", "Favorite Connections Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
 }
 
 public OnClientAuthorized(client, const String:auth[])
 { 
-	new String:connectmethod[32], String:authid[32], String:name[32]; 
+	new String:connectmethod[32]; 
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{ 
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
