@@ -1,8 +1,7 @@
 #pragma semicolon 1
 #include <sourcemod>
-#include <morecolors>
 
-static String:KVPath2[PLATFORM_MAX_PATH];
+new Handle:forward_connectmethodFavorites = INVALID_HANDLE;
 
 public Plugin:myinfo =
 {
@@ -14,7 +13,7 @@ public Plugin:myinfo =
 
 public OnPluginStart()
 {
-	BuildPath(Path_SM, KVPath2, sizeof(KVPath2), "configs/admins.cfg");
+	forward_connectmethodFavorites = CreateGlobalForward("ClientConnectedViaFavorites", ET_Event, Param_Cell);
 }
 
 public OnClientAuthorized(client, const String:auth[])
@@ -23,22 +22,12 @@ public OnClientAuthorized(client, const String:auth[])
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{ 
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
-		{ 
-          		GetClientAuthId(client, AuthId_Steam2, authid, sizeof(authid));
-			GetClientName(client, name, sizeof(name));
-			
-			new Handle:DB2 = CreateKeyValues("Admins");
-			FileToKeyValues(DB2, KVPath2);
-			if (KvJumpToKey(DB2, authid, false))
-			{
-				return;
-			}
-			KvRewind(DB2);
-			CloseHandle(DB2);
-			
-			ServerCommand("sm_adduserid \"%s\" Regular %s", authid, name);
-			CPrintToChatAll("{lime}%s {orange}has this server in his or her favorites therefore receives the {mediumorchid}Regular {orange}rank!", name);
-        	}
-    	}
+		{
+			new Action:result = Plugin_Continue;
+			Call_StartForward(forward_connectmethodFavorites);
+			Call_PushCell(client);
+			Call_Finish(result);
+		}
+	}
 	return;
 }
