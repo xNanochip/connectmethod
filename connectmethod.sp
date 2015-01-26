@@ -12,6 +12,20 @@ public Plugin:myinfo =
 	url = "http://thecubeserver.org/"
 };
 
+public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max) {
+	new String:Game[32];
+	GetGameFolderName(Game, sizeof(Game));
+	
+	if(!StrEqual(Game, "tf") && !StrEqual(Game, "tf_beta") && !StrEqual(Game, "dod") && !StrEqual(Game, "hl2mp") && !StrEqual(Game, "css")) {
+		Format(error, err_max, "This plugin only works for TF2, TF2Beta, DoD:S, CS:S and HL2:DM.");
+		return APLRes_Failure;
+	}
+	
+	RegPluginLibrary("favorite_connections");
+	
+	return APLRes_Success;
+}
+
 public OnPluginStart()
 {
 	forward_connectmethodFavorites = CreateGlobalForward("ClientConnectedViaFavorites", ET_Event, Param_Cell);
