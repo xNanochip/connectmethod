@@ -9,7 +9,7 @@ public Plugin:myinfo =
 	name = "Favorite Connections",
   	author = "Nanochip & Wolvan",
 	version = "1.0"
-  	description = "Detect when a player connects to the server through favorites and do various things.",
+  	description = "Detect when a player connects to the server through favorites.",
 	url = "http://thecubeserver.org/"
 };
 
