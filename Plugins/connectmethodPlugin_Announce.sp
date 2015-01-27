@@ -1,11 +1,10 @@
 #pragma semicolon 1
 #include <sourcemod>
-#include <morecolors>
 
 public Plugin:myinfo =
 {
-	name = "Connect Method Plugin: Announce favorites join",
-  	author = "Wolvan",
+	name = "Favorite Connections Plugin: Announce Favorites Join",
+  	author = "Nanochip & Wolvan",
   	description = "Announce when a player joins through his/her favorites.",
 	version = "1.0"
 	url = "http://thecubeserver.org/"
@@ -13,7 +12,8 @@ public Plugin:myinfo =
 
 public Action:ClientConnectedViaFavorites(client)
 {
+	new String:name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
-	CPrintToChatAll("{lime}%s {orange}has this server in his or her favorites therefore receives the {mediumorchid}Regular {orange}rank!", name);
+	CPrintToChatAll("%s join this server through his/her favorites! Thank you!", name);
 	return Plugin_Continue;
 }
