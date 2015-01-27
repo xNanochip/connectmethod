@@ -6,7 +6,7 @@ public Plugin:myinfo =
 {
 	name = "Connect Method Plugin: Announce favorites join",
   	author = "Wolvan",
-  	description = "Add Player to Admin.cfg when he joins via favorites.",
+  	description = "Announce when a player joins through his/her favorites.",
 	version = "1.0"
 	url = "http://thecubeserver.org/"
 };
