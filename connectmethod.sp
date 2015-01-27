@@ -36,7 +36,7 @@ public OnPluginStart()
 
 public OnClientAuthorized(client, const String:auth[])
 {
-  	if (GetConVarBool(hEnable)) {
+  	if (!GetConVarBool(hEnable)) {
 		return;
 	}
 	new String:connectmethod[32]; 
