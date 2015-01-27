@@ -14,6 +14,6 @@ public Action:ClientConnectedViaFavorites(client)
 {
 	new String:name[MAX_NAME_LENGTH];
 	GetClientName(client, name, sizeof(name));
-	CPrintToChatAll("%s join this server through his/her favorites! Thank you!", name);
+	PrintToChatAll("%s join this server through his/her favorites! Thank you!", name);
 	return Plugin_Continue;
 }
