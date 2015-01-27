@@ -1,12 +1,11 @@
 #pragma semicolon 1
 #include <sourcemod>
-#include <morecolors>
 
 static String:KVPath2[PLATFORM_MAX_PATH];
 
 public Plugin:myinfo =
 {
-	name = "Connect Method Plugin: Add",
+	name = "Connect Method Plugin: Add to Admins.cfg",
   	author = "Wolvan",
   	description = "Add Player to Admin.cfg when he joins via favorites.",
 	version = "1.0"
@@ -33,6 +32,5 @@ public Action:ClientConnectedViaFavorites(client)
 	CloseHandle(DB2);
 
 	ServerCommand("sm_adduserid \"%s\" Regular %s", authid, name);
-	CPrintToChatAll("{lime}%s {orange}has this server in his or her favorites therefore receives the {mediumorchid}Regular {orange}rank!", name);
 	return Plugin_Continue;
 }
