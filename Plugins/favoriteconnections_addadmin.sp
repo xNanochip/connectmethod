@@ -38,7 +38,7 @@ public OnPluginStart()
 	hFlags = CreateConVar("favoriteconnections_addadmin_flags", "", "Set the flags of the user", FCVAR_NOTIFY);
 	hImmunity = CreateConVar("favoriteconnections_addadmin_immunity", "", "Set the immunity level of the user", FCVAR_NOTIFY);
 	hGroup = CreateConVar("favoriteconnections_addadmin_group", "", "Set the group of the user", FCVAR_NOTIFY);
-	AutoExecConfig(true, "FavoriteConnections_AddAdmin");
+	AutoExecConfig(true, "FavoriteConnections_AddAdmin.cfg");
 	
 	BuildPath(Path_SM, kvPath, sizeof(kvPath), "configs/admins.cfg");
 }
