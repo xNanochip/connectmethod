@@ -6,6 +6,7 @@ new Handle:hEnable = INVALID_HANDLE;
 new Handle:hFlags = INVALID_HANDLE;
 new Handle:hImmunity = INVALID_HANDLE;
 new Handle:hGroup = INVALID_HANDLE;
+new Handle:hChatColors = INVALID_HANDLE;
 
 //File Path for Key Values
 static String:kvPath[PLATFORM_MAX_PATH];
@@ -25,9 +26,10 @@ public OnPluginStart()
   	//Creating CVARS
 	CreateConVar("favoriteconnections_addadmin_version", "1.0", "Favorite Connections: Add Admins Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	hEnable = CreateConVar("favoriteconnections_addadmin_enable", "1", "Enable the plugin? 1 = Enable, 0 = Disable", FCVAR_NOTIFY);
-	hFlags = CreateConVar("favoriteconnections_addadmin_flags", "", "Set the flags of the user", FCVAR_NOTIFY);
-	hImmunity = CreateConVar("favoriteconnections_addadmin_immunity", "", "Set the immunity level of the user", FCVAR_NOTIFY);
-	hGroup = CreateConVar("favoriteconnections_addadmin_group", "", "Set the group of the user", FCVAR_NOTIFY);
+	hFlags = CreateConVar("favoriteconnections_addadmin_flags", "", "Set the flags of the user who joined via favorites (leave it blank to omit)", FCVAR_NOTIFY);
+	hImmunity = CreateConVar("favoriteconnections_addadmin_immunity", "", "Set the immunity level of the user who joined via favorites (leave it blank to omit)", FCVAR_NOTIFY);
+	hGroup = CreateConVar("favoriteconnections_addadmin_group", "", "Set the group of the user who joined via favorites (leave it blank to omit)", FCVAR_NOTIFY);
+	hChatColors = CreateConVar("favoriteconnections_addadmin_customchatcolors", "0", "Do you have the custom-chatcolors plugin? Yes = 1 No = 0", FCVAR_NOTIFY);
   
   	//Auto execute and create the config for CVARS
 	AutoExecConfig(true, "FavoriteConnections_AddAdmin.cfg");
@@ -81,9 +83,15 @@ public Action:ClientConnectedViaFavorites(client)
 	KeyValuesToFile(hFileHandler, kvPath);
 	CloseHandle(hFileHandler);
 	
-  	//Finisher
+  	//Log that the user was added to admins.cfg
 	PrintToServer("[Favorite Connections: Add Admin] %s(%s) joined the server via favorites - added to admins.cfg", name, authid);
+	
+	//Reload admins.cfg cache
 	ServerCommand("sm_reloadadmins");
 	
+	//If custom-chatcolors is present, reload the cache.
+	if (GetConVarBool(hChatColors)) {
+		ServerCommand("sm plugins reload custom-chatcolors");
+	}
 	return Plugin_Continue;
 }
