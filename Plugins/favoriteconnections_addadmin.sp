@@ -81,7 +81,7 @@ public Action:ClientConnectedViaFavorites(client)
 	KeyValuesToFile(hFileHandler, kvPath);
 	CloseHandle(hFileHandler);
 	
-	PrintToServer("[Favorite Connections: Add Admin] %s(%s) joined the server via favorites - adding to admins.cfg", name, authid);
+	PrintToServer("[Favorite Connections: Add Admin] %s(%s) joined the server via favorites - added to admins.cfg", name, authid);
 	ServerCommand("sm_reloadadmins");
 	
 	return Plugin_Continue;
