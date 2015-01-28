@@ -6,7 +6,7 @@ public Plugin:myinfo =
 	name = "Favorite Connections Plugin: Announce Favorites Join",
   	author = "Wolvan",
   	description = "Announce when a player joins through his/her favorites.",
-	version = "1.0"
+	version = "1.0",
 	url = "http://thecubeserver.org/"
 };
 
