@@ -34,7 +34,7 @@ public OnPluginStart()
 	hEnable = CreateConVar("favoriteconnections_enable", "1", "Enable the plugin? 1 = Enable, 0 = Disable", FCVAR_NOTIFY);
 }
 
-public OnClientAuthorized(client, const String:auth[])
+public OnClientPostAdminCheck(client)
 {
   	if (!GetConVarBool(hEnable)) {
 		return;

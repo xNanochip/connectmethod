@@ -1,12 +1,12 @@
 #pragma semicolon 1
 #include <sourcemod>
-#include <morecolors>
+//#include <morecolors>
 
 #define PLUGIN_VERSION "1.0"
 
 new Handle:hEnable = INVALID_HANDLE;
-new bool:FirstTime[MAXPLAYERS+1] = true;
-new bool:ThruFavs[MAXPLAYERS+1] = false;
+new bool:FirstTime[MAXPLAYERS+1] = { true, ... };
+new bool:ThruFavs[MAXPLAYERS+1] = { false, ... };
 
 public Plugin:myinfo =
 {
@@ -27,13 +27,18 @@ public OnPluginStart()
 	HookEvent("player_team", OnPlayerTeam);
 }
 
+public OnClientDisconnect(client)
+{
+	FirstTime[client] = true;
+	ThruFavs[client] = false;
+}
+
 public Action:ClientConnectedViaFavorites(client)
 {
 	if (!GetConVarBool(hEnable)) {
 		return Plugin_Continue;
 	}
-	
-	if (GetUserFlagBits(client) != 0)
+	if (GetUserFlagBits(client) != 2097151)
 	{
 		FirstTime[client] = false;
 	}
@@ -51,7 +56,7 @@ public Action:OnPlayerTeam(Handle:event, const String:name[], bool:dontBroadcast
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	if (FirstTime[client] && ThruFavs[client])
 	{
-		CPrintToChat(client, "{orange}THIS IS A TEST, HERP DERP");
+		PrintToChat(client, "THIS IS A TEST, HERP DERP");
 	}
 	return Plugin_Continue;
 }
