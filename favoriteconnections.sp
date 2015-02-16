@@ -37,11 +37,11 @@ public OnPluginStart()
 	CreateConVar("favoriteconnections_version", PLUGIN_VERSION, "Favorite Connections Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	hEnable = CreateConVar("favoriteconnections_enable", "1", "Enable the plugin? 1 = Enable, 0 = Disable", FCVAR_NOTIFY);
 	
+	decl String:connectmethod[32];
 	for (new i = 1; i <= MaxClients; i++) 
 	{
 		if (IsClientInGame(i) && !IsFakeClient(i)) 
 		{
-			new String:connectmethod[32];
 			if (GetClientInfo(i, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 			{
 				if (StrEqual(connectmethod, "serverbrowser_favorites"))
@@ -63,7 +63,7 @@ public OnClientPostAdminCheck(client)
 		return;
 	}
 	
-	new String:connectmethod[32];
+	decl String:connectmethod[32];
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
@@ -83,7 +83,7 @@ public OnClientAuthorized(client, const String:auth[])
 		return;
 	}
 	
-	new String:connectmethod[32];
+	decl String:connectmethod[32];
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
