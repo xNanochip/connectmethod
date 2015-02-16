@@ -1,15 +1,18 @@
 #pragma semicolon 1
 #include <sourcemod>
 
+#define PLUGIN_VERSION "1.1"
+
 new Handle:forward_connectmethodFavorites = INVALID_HANDLE;
+new Handle:forward_clientAuthorizedFavorites = INVALID_HANDLE;
 new Handle:hEnable = INVALID_HANDLE;
 
 public Plugin:myinfo =
 {
 	name = "Favorite Connections",
   	author = "Nanochip & Wolvan",
-	version = "1.0",
-  	description = "Detect when a player connects to the server through favorites.",
+	version = PLUGIN_VERSION,
+  	description = "Detect when a player connects to the server via favorites.",
 	url = "http://thecubeserver.org/"
 };
 
@@ -30,16 +33,42 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max) 
 public OnPluginStart()
 {
 	forward_connectmethodFavorites = CreateGlobalForward("ClientConnectedViaFavorites", ET_Event, Param_Cell);
-	CreateConVar("favoriteconnections_version", "1.0", "Favorite Connections Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
+	forward_clientAuthorizedFavorites = CreateGlobalForward("OnClientAuthorizedFavorites", ET_Event, Param_Cell);
+	CreateConVar("favoriteconnections_version", PLUGIN_VERSION, "Favorite Connections Version", FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_UNLOGGED|FCVAR_DONTRECORD|FCVAR_REPLICATED|FCVAR_NOTIFY);
 	hEnable = CreateConVar("favoriteconnections_enable", "1", "Enable the plugin? 1 = Enable, 0 = Disable", FCVAR_NOTIFY);
+	
+	for (new i = 1; i <= MaxClients; i++) 
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i)) 
+		{
+			doCheck1(i);
+		}
+	}
 }
 
 public OnClientPostAdminCheck(client)
 {
-  	if (!GetConVarBool(hEnable)) {
+  	if (!GetConVarBool(hEnable)) 
+	{
 		return;
 	}
-	new String:connectmethod[32]; 
+	
+	doCheck1(client);
+}
+
+public OnClientAuthorized(client, const String:auth[])
+{
+	if (!GetConVarBool(hEnable))
+	{
+		return;
+	}
+	
+	doCheck2(client);
+}
+
+doCheck1(client)
+{
+	new String:connectmethod[32];
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{
 		if (StrEqual(connectmethod, "serverbrowser_favorites"))
@@ -50,5 +79,19 @@ public OnClientPostAdminCheck(client)
 			Call_Finish(result);
 		}
 	}
-	return;
+}
+
+doCheck2(client)
+{
+	new String:connectmethod[32];
+	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
+	{
+		if (StrEqual(connectmethod, "serverbrowser_favorites"))
+		{
+			new Action:result = Plugin_Continue;
+			Call_StartForward(forward_clientAuthorizedFavorites);
+			Call_PushCell(client);
+			Call_Finish(result);
+		}
+	}
 }
