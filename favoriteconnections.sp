@@ -41,7 +41,17 @@ public OnPluginStart()
 	{
 		if (IsClientInGame(i) && !IsFakeClient(i)) 
 		{
-			doCheck1(i);
+			new String:connectmethod[32];
+			if (GetClientInfo(i, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
+			{
+				if (StrEqual(connectmethod, "serverbrowser_favorites"))
+				{
+					new Action:result = Plugin_Continue;
+					Call_StartForward(forward_connectmethodFavorites);
+					Call_PushCell(i);
+					Call_Finish(result);
+				}
+			}
 		}
 	}
 }
@@ -53,21 +63,6 @@ public OnClientPostAdminCheck(client)
 		return;
 	}
 	
-	doCheck1(client);
-}
-
-public OnClientAuthorized(client, const String:auth[])
-{
-	if (!GetConVarBool(hEnable))
-	{
-		return;
-	}
-	
-	doCheck2(client);
-}
-
-doCheck1(client)
-{
 	new String:connectmethod[32];
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{
@@ -81,8 +76,13 @@ doCheck1(client)
 	}
 }
 
-doCheck2(client)
+public OnClientAuthorized(client, const String:auth[])
 {
+	if (!GetConVarBool(hEnable))
+	{
+		return;
+	}
+	
 	new String:connectmethod[32];
 	if (GetClientInfo(client, "cl_connectmethod", connectmethod, sizeof(connectmethod)))
 	{
