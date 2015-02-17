@@ -89,16 +89,17 @@ public Action:ClientConnectedViaFavorites(client)
 	return Plugin_Continue;
 }
 
-public OnPlayerTeam(Handle:event, const String:name[], bool:dontBroadcast)
+public OnPlayerTeam(Handle:event, const String:teamName[], bool:dontBroadcast)
 {
 	if (!GetConVarBool(hEnable)) 
 	{
 		return;
 	}
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	decl String:notifyChat[256], String:notifyCenter[256];
+	decl String:notifyChat[256], String:notifyCenter[256], String:name[32];
 	if (ThruFavs[client] && FirstTime[client])
 	{
+		GetClientName(client, name, sizeof(name));
 		GetConVarString(hNotifyChat, notifyChat, sizeof(notifyChat));
 		GetConVarString(hNotifyCenter, notifyCenter, sizeof(notifyCenter));
 		
@@ -107,17 +108,18 @@ public OnPlayerTeam(Handle:event, const String:name[], bool:dontBroadcast)
 		
 		if (GetConVarInt(hNotifyMode) == 1)
 		{
-			CPrintToChatAll(notifyChat);
+			CPrintToChat(client, notifyChat);
 		}
 		if (GetConVarInt(hNotifyMode) == 2)
 		{
-			PrintCenterTextAll(notifyCenter);
+			PrintCenterText(client, notifyCenter);
 		}
 		if (GetConVarInt(hNotifyMode) == 3)
 		{
-			CPrintToChatAll(notifyChat);
-			PrintCenterTextAll(notifyCenter);
+			CPrintToChat(client, notifyChat);
+			PrintCenterText(client, notifyCenter);
 		}
+		FirstTime[client] = false;
 	}
 	return;
 }
