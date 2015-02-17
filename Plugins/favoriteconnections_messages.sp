@@ -40,17 +40,6 @@ public OnPluginStart()
 	HookEvent("player_team", OnPlayerTeam);
 }
 
-public Action:OnClientAuthorizedFavorites(client)
-{
-	if (!GetConVarBool(hEnable)) 
-	{
-		return Plugin_Continue;
-	}
-	
-	ThruFavs[client] = true;
-	return Plugin_Continue;
-}
-
 public Action:ClientConnectedViaFavorites(client)
 {
 	if (!GetConVarBool(hEnable)) 
@@ -58,6 +47,7 @@ public Action:ClientConnectedViaFavorites(client)
 		return Plugin_Continue;
 	}
 	
+	ThruFavs[client] = true;
 	if (GetUserFlagBits(client) != 0)
 	{
 		FirstTime[client] = false;
