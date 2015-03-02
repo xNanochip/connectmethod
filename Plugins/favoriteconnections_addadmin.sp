@@ -58,7 +58,7 @@ public OnPluginStart()
 	BuildPath(Path_SM, kvPath, sizeof(kvPath), "configs/admins.cfg");
 	if(GetConVarBool(hAdminPlugin)) {
 		if(!PrepareQuery()) {
-			PrintToServer("Error while connecting to database and preparing statement");
+			PrintToServer("[Favorite Connections: Add Admin] Error while connecting to database and preparing statement");
 		}
 	}
 }
@@ -85,7 +85,7 @@ public Action:ClientConnectedViaFavorites(client)
 		if(!SQL_Execute(hCheckQuery)) {
 			decl String:Error[1024];
 			SQL_GetError(hCheckQuery, Error, sizeof(Error));
-			PrintToServer("An error has occured while querying the Database: %s", Error);
+			PrintToServer("[Favorite Connections: Add Admin] An error has occured while querying the Database: %s", Error);
 			return Plugin_Continue;
 		}
 		
@@ -94,7 +94,7 @@ public Action:ClientConnectedViaFavorites(client)
 				return Plugin_Continue;
 			}
 		} else {
-			PrintToServer("An error has occured while fetching the Query Result");
+			PrintToServer("[Favorite Connections: Add Admin] An error has occured while fetching the Query Result");
 			return Plugin_Continue;
 		}
 		
@@ -106,7 +106,7 @@ public Action:ClientConnectedViaFavorites(client)
 		if(!SQL_Execute(hInsertQuery)) {
 			decl String:Error[1024];
 			SQL_GetError(hInsertQuery, Error, sizeof(Error));
-			PrintToServer("An error has occured while writing to the Database: %s", Error);
+			PrintToServer("[Favorite Connections: Add Admin] An error has occured while writing to the Database: %s", Error);
 		}
 		if (!StrEqual(group, ""))
 		{
