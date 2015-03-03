@@ -20,12 +20,12 @@ new Handle:hSelectGroupID = INVALID_HANDLE;
 new Handle:hCheckGroup = INVALID_HANDLE;
 new Handle:hInsertAdminGroupIDs = INVALID_HANDLE;
 
-new String:InsertQuery[] = "INSERT INTO sm_admins('authtype', 'identity', 'flags', 'immunity', 'name') VALUES('steam', ?, ?, ?, ?)";
+new String:InsertQuery[] = "INSERT INTO sm_admins(authtype, identity, flags, immunity, name' VALUES('steam', ?, ?, ?, ?)";
 new String:CheckQuery[] = "SELECT EXISTS (SELECT * FROM sm_admins WHERE identity = ?)";
 new String:SelectAdminID[] =	"SELECT id FROM sm_admins WHERE identity = ?";
 new String:SelectGroupID[] = "SELECT id FROM sm_groups WHERE name = ?";
 new String:CheckGroup[] = "SELECT EXISTS (SELECT * FROM sm_groups WHERE name = ?)";
-new String:InsertAdminGroupIDs[] = "INSERT INTO sm_admins_groups('admin_id', 'group_id', 'inherit_order') VALUES (?, ?, '0')";
+new String:InsertAdminGroupIDs[] = "INSERT INTO sm_admins_groups(admin_id, group_id, inherit_order) VALUES (?, ?, '0')";
 
 new AdminID;
 new GroupID;
@@ -113,7 +113,7 @@ public Action:ClientConnectedViaFavorites(client)
 			//If the group doesn't exist then return
 			if (!IsValidGroup(group))
 			{
-				PrintToServer(client, "[Favorite Connections: Add Admin] %s doesn't exist in the Database! Fix the cvar!", group);
+				PrintToServer("[Favorite Connections: Add Admin] %s doesn't exist in the Database! Fix the cvar!", group);
 				return Plugin_Continue;
 			}
 			
@@ -244,43 +244,43 @@ bool:PrepareQuery() {
 	}
 	if (hInsertQuery == INVALID_HANDLE) {
 		hInsertQuery = SQL_PrepareQuery(db, InsertQuery, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hInsertQuery == INVALID_HANDLE) {
+			PrintToServer("Could not prepare InsertQuery statement: %s", error);
 			return false;
 		}
 	}
 	if (hCheckQuery == INVALID_HANDLE) {
 		hCheckQuery = SQL_PrepareQuery(db, CheckQuery, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hCheckQuery == INVALID_HANDLE) {
+			PrintToServer("Could not prepare CheckQuery statement: %s", error);
 			return false;
 		}
 	}
 	if (hSelectAdminID == INVALID_HANDLE) {
 		hSelectAdminID = SQL_PrepareQuery(db, SelectAdminID, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hSelectAdminID == INVALID_HANDLE) {
+			PrintToServer("Could not prepare SelectAdminID statement: %s", error);
 			return false;
 		}
 	}
 	if (hSelectGroupID == INVALID_HANDLE) {
 		hSelectGroupID = SQL_PrepareQuery(db, SelectGroupID, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hSelectGroupID == INVALID_HANDLE) {
+			PrintToServer("Could not prepare SelectGroupID statement: %s", error);
 			return false;
 		}
 	}
 	if (hCheckGroup == INVALID_HANDLE) {
 		hCheckGroup = SQL_PrepareQuery(db, CheckGroup, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hCheckGroup == INVALID_HANDLE) {
+			PrintToServer("Could not prepare CheckGroup statement: %s", error);
 			return false;
 		}
 	}
 	if (hInsertAdminGroupIDs == INVALID_HANDLE) {
 		hInsertAdminGroupIDs = SQL_PrepareQuery(db, InsertAdminGroupIDs, error, sizeof(error));
-		PrintToServer("Could not connect to database \"default\": %s", error);
 		if (hInsertAdminGroupIDs == INVALID_HANDLE) {
+			PrintToServer("Could not prepare InsertAdminGroupIDs statement: %s", error);
 			return false;
 		}
 	}
